@@ -1,0 +1,3 @@
+[submodule "pyeapi"]
+	path = pyeapi
+	url = https://github.com/arista-eosplus/pyeapi

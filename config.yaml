@@ -1,0 +1,71 @@
+   
+arista7050: &arista7050
+  model: '7050qx-32'
+  username: 'admin'
+  password: 'admin'
+
+common_vlans: &common_vlans
+  # port : vlan(s)
+  # vlan = int => untagged
+  # vlan = list => tagged, with first list entry the native vlan
+  4: 2
+  7/1: 2
+  7/2: 10
+  7/3: [11]
+  7/4: 999
+  11: 2
+  12: 3
+  13: 4
+  14: 5
+  15: 6
+  16: 7
+  17: 8
+  18: 9
+  21: [10, 2, 3]
+  22: [10, 2, 3]
+  23: [10, 4, 5]
+  24: [10, 4, 5]
+  25: [10, 6, 7]
+  26: [10, 6, 7]
+  27: [10, 8, 9]
+  28: [10, 8, 9]
+  29: [10]
+
+static_address_table: &static_address_table
+  1: [hera-gpu1-3.forty.pvt, hera-gpu2-3.forty.pvt]
+  2: [hera-gpu3-3.forty.pvt, hera-gpu4-3.forty.pvt]
+  3: [hera-gpu5-3.forty.pvt, hera-gpu6-3.forty.pvt]
+  4: [hera-gpu7-3.forty.pvt, hera-gpu8-3.forty.pvt]
+  5: [hera-gpu9-3.forty.pvt, hera-gpu10-3.forty.pvt]
+  6: [hera-gpu11-3.forty.pvt, hera-gpu12-3.forty.pvt]
+  7: [hera-gpu13-3.forty.pvt, hera-gpu14-3.forty.pvt]
+  8: [hera-gpu15-3.forty.pvt, hera-gpu16-3.forty.pvt]
+  9: [hera-gpu1-5.forty.pvt, hera-gpu2-5.forty.pvt]
+  10: [hera-gpu3-5.forty.pvt, hera-gpu4-5.forty.pvt]
+  11: [hera-gpu5-5.forty.pvt, hera-gpu6-5.forty.pvt]
+  12: [hera-gpu7-5.forty.pvt, hera-gpu8-5.forty.pvt]
+  13: [hera-gpu9-5.forty.pvt, hera-gpu10-5.forty.pvt]
+  14: [hera-gpu11-5.forty.pvt, hera-gpu12-5.forty.pvt]
+  15: [hera-gpu13-5.forty.pvt, hera-gpu14-5.forty.pvt]
+  16: [hera-gpu15-5.forty.pvt, hera-gpu16-5.forty.pvt]
+
+switches:
+  hera-40g-sw1:
+    <<: *arista7050
+    vlans: *common_vlans
+  hera-40g-sw2:
+    <<: *arista7050
+    vlans: *common_vlans
+  hera-40g-sw3:
+    <<: *arista7050
+    vlans: *common_vlans
+  hera-40g-sw4:
+    <<: *arista7050
+    vlans: *common_vlans
+  hera-ssc-sw1:
+    <<: *arista7050
+    address_table: *static_address_table
+  hera-ssc-sw2:
+    <<: *arista7050
+    address_table: *static_address_table
+   
