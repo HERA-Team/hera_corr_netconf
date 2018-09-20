@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pyeapi.api.vlans
 import yaml
 import sys
