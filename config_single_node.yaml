@@ -1,0 +1,108 @@
+   
+arista7050: &arista7050
+  model: '7050qx-32'
+  username: 'admin'
+  password: 'admin'
+
+common_vlans: &common_vlans
+  # port : vlan(s)
+  # vlan = int => untagged
+  # vlan = list => tagged, with first list entry the native vlan
+  1: 1
+  2: 1
+  3: 1
+  4: 1
+  5: 998
+  #7/1: 2 Set individually per switch
+  7/2: 10
+  7/3: [11]
+  7/4: 999
+  8: 1
+  9: 1
+  10: 1
+  11: 2
+  12: 790
+  13: 791
+  14: 792
+  15: 793
+  16: 794
+  17: 795
+  18: 796
+  19: 797
+  20: 798
+  21: [10, 2]
+  22: [10, 2]
+  23: [10, 2]
+  24: [10, 2]
+  25: [10, 2]
+  26: [10, 2]
+  27: [10, 2]
+  28: [10, 2]
+  29: [10]
+  30: 1
+  31: 1
+  32: 1
+
+static_address_table: &static_address_table
+  dynamic:
+    - hera-gpu1-3.forty.pvt
+    - hera-gpu2-3.forty.pvt
+    - hera-gpu3-3.forty.pvt
+    - hera-gpu4-3.forty.pvt
+    - hera-gpu5-3.forty.pvt
+    - hera-gpu6-3.forty.pvt
+    - hera-gpu7-3.forty.pvt
+    - hera-gpu8-3.forty.pvt
+    - hera-gpu9-3.forty.pvt
+    - hera-gpu10-3.forty.pvt
+    - hera-gpu11-3.forty.pvt
+    - hera-gpu12-3.forty.pvt
+    - hera-gpu13-3.forty.pvt
+    - hera-gpu14-3.forty.pvt
+    - hera-gpu15-3.forty.pvt
+    - hera-gpu16-3.forty.pvt
+    - hera-gpu1-5.forty.pvt
+    - hera-gpu2-5.forty.pvt
+    - hera-gpu3-5.forty.pvt
+    - hera-gpu4-5.forty.pvt
+    - hera-gpu5-5.forty.pvt
+    - hera-gpu6-5.forty.pvt
+    - hera-gpu7-5.forty.pvt
+    - hera-gpu8-5.forty.pvt
+    - hera-gpu9-5.forty.pvt
+    - hera-gpu10-5.forty.pvt
+    - hera-gpu11-5.forty.pvt
+    - hera-gpu12-5.forty.pvt
+    - hera-gpu13-5.forty.pvt
+    - hera-gpu14-5.forty.pvt
+    - hera-gpu15-5.forty.pvt
+    - hera-gpu16-5.forty.pvt
+
+switches:
+  hera-40g-sw1:
+    <<: *arista7050
+    vlans:
+      <<: *common_vlans
+      7/1: 2
+  hera-40g-sw2:
+    <<: *arista7050
+    vlans:
+      <<: *common_vlans
+      7/1: 888
+  hera-40g-sw3:
+    <<: *arista7050
+    vlans:
+      <<: *common_vlans
+      7/1: 888
+  hera-40g-sw4:
+    <<: *arista7050
+    vlans:
+      <<: *common_vlans
+      7/1: 888
+  hera-ssc-sw1:
+    <<: *arista7050
+    address_table: *static_address_table
+#  hera-ssc-sw2:
+#    <<: *arista7050
+#    address_table: *static_address_table
+   

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pyeapi
 import yaml
 import sys
@@ -66,8 +68,11 @@ for host, conf in config['switches'].iteritems():
             else:
                 mac = lookup_mac(desthost)
                 arp_cache[desthost] = mac
-        print "Mapping destination mac 0x%x to port %s..." % (mac, port_str)
-        mac_str = format_mac_str(mac)
-        success = switch.config("mac address-table static %s vlan 1 interface Ethernet %s" % (mac_str, port_str))
+            print "Mapping destination mac 0x%x to port %s..." % (mac, port_str)
+            mac_str = format_mac_str(mac)
+            if port_str == "dynamic":
+                success = switch.config("no mac address-table static %s vlan 1" % (mac_str))
+            else:
+                success = switch.config("mac address-table static %s vlan 1 interface Ethernet %s" % (mac_str, port_str))
 
 
