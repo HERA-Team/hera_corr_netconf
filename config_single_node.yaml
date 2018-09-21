@@ -44,6 +44,42 @@ common_vlans: &common_vlans
   32: 1
 
 static_address_table: &static_address_table
+  24:
+    - hera-gpu1-3.forty.pvt
+    - hera-gpu2-3.forty.pvt
+    - hera-gpu3-3.forty.pvt
+    - hera-gpu4-3.forty.pvt
+    - hera-gpu5-3.forty.pvt
+    - hera-gpu6-3.forty.pvt
+    - hera-gpu7-3.forty.pvt
+    - hera-gpu8-3.forty.pvt
+    - hera-gpu9-3.forty.pvt
+    - hera-gpu10-3.forty.pvt
+    - hera-gpu11-3.forty.pvt
+    - hera-gpu12-3.forty.pvt
+    - hera-gpu13-3.forty.pvt
+    - hera-gpu14-3.forty.pvt
+    - hera-gpu15-3.forty.pvt
+    - hera-gpu16-3.forty.pvt
+  16:
+    - hera-gpu1-5.forty.pvt
+    - hera-gpu2-5.forty.pvt
+    - hera-gpu3-5.forty.pvt
+    - hera-gpu4-5.forty.pvt
+    - hera-gpu5-5.forty.pvt
+    - hera-gpu6-5.forty.pvt
+    - hera-gpu7-5.forty.pvt
+    - hera-gpu8-5.forty.pvt
+    - hera-gpu9-5.forty.pvt
+    - hera-gpu10-5.forty.pvt
+    - hera-gpu11-5.forty.pvt
+    - hera-gpu12-5.forty.pvt
+    - hera-gpu13-5.forty.pvt
+    - hera-gpu14-5.forty.pvt
+    - hera-gpu15-5.forty.pvt
+    - hera-gpu16-5.forty.pvt
+
+dynamic_address_table: &dynamic_address_table
   dynamic:
     - hera-gpu1-3.forty.pvt
     - hera-gpu2-3.forty.pvt
@@ -84,21 +120,25 @@ switches:
     vlans:
       <<: *common_vlans
       7/1: 2
+    address_table: *dynamic_address_table
   hera-40g-sw2:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
+    address_table: *dynamic_address_table
   hera-40g-sw3:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
+    address_table: *dynamic_address_table
   hera-40g-sw4:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
+    address_table: *dynamic_address_table
   hera-ssc-sw1:
     <<: *arista7050
     address_table: *static_address_table
