@@ -68,11 +68,16 @@ for host, conf in config['switches'].iteritems():
             else:
                 mac = lookup_mac(desthost)
                 arp_cache[desthost] = mac
-            print "Mapping destination mac 0x%x to port %s..." % (mac, port_str)
             mac_str = format_mac_str(mac)
-            if port_str == "dynamic":
-                success = switch.config("no mac address-table static %s vlan 1" % (mac_str))
+            if "vlans" in conf.keys():
+                vlans = conf["vlans"].get(port, [1])
             else:
-                success = switch.config("mac address-table static %s vlan 1 interface Ethernet %s" % (mac_str, port_str))
+                vlans = [1]
+            print "Mapping destination mac 0x%x to port %s (vlans %s)..." % (mac, port_str, vlans)
+            for vlan in vlans:
+                if port_str == "dynamic":
+                    success = switch.config("no mac address-table static %s vlan %d" % (mac_str, vlan))
+                else:
+                    success = switch.config("mac address-table static %s vlan %d interface Ethernet %s" % (mac_str, vlan, port_str))
 
 
