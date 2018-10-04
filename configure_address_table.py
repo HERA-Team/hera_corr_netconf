@@ -71,6 +71,8 @@ for host, conf in config['switches'].iteritems():
             mac_str = format_mac_str(mac)
             if "vlans" in conf.keys():
                 vlans = conf["vlans"].get(port, [1])
+                if type(vlans) == int:
+                    vlans = [vlans]
             else:
                 vlans = [1]
             print "Mapping destination mac 0x%x to port %s (vlans %s)..." % (mac, port_str, vlans)
