@@ -59,17 +59,24 @@ for host, conf in config['switches'].iteritems():
             print_success(success)
         elif type(vlans) is list:
             for vlan in vlans:
+                if vlan == 'None':
+                    continue
                 if (vlan not in current_vlans) and not vlan_api.get(vlan):
                     print "Creating vlan %d" % vlan
                     vlan_api.create(vlan)
                     current_vlans = get_current_vlans(vlan_api)
-            print "Setting Ethernet %s native vlan to %d" % (port_str, vlans[0]),
-            sys.stdout.flush()
-            success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk native vlan %d' % vlans[0]])
-            print_success(success)
+            if vlans[0] != 'None':
+                print "Setting Ethernet %s native vlan to %d" % (port_str, vlans[0]),
+                sys.stdout.flush()
+                success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk native vlan %d' % vlans[0], 'switchport trunk native vlan tag'])
+                print_success(success)
+            else:
+                vlans = vlans[1:]
+                print "Setting Ethernet %s to have no Native vlan" % (port_str),
+                sys.stdout.flush()
+                success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'no switchport trunk native vlan'])
+                print_success(success)
             print "Adding Ethernet %s to tagged vlans %s..." % (port_str, ','.join(map(str, vlans[1:]))),
             sys.stdout.flush()
             success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk allowed vlan %s' % ','.join(map(str, vlans))])
             print_success(success)
-
-
