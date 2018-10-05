@@ -4,6 +4,85 @@ arista7050: &arista7050
   username: 'admin'
   password: 'admin'
 
+front_end_vlans: &front_end_vlans
+  1/1: 2
+  1/2: 2
+  1/3: 2
+  1/4: 2
+  2/1: 2
+  2/2: 2
+  2/3: 2
+  2/4: 2
+  3/1: 2
+  3/2: 2
+  3/3: 2
+  3/4: 2
+  4/1: 2
+  4/2: 2
+  4/3: 2
+  4/4: 2
+  5/1: 2
+  5/2: 2
+  5/3: 2
+  5/4: 2
+  6/1: 2
+  6/2: 2
+  6/3: 2
+  6/4: 2
+  7/1: 2
+  7/2: 2
+  7/3: 2
+  7/4: 2
+  8/1: 2
+  8/2: 2
+  8/3: 2
+  8/4: 2
+  9/1: 2
+  9/2: 2
+  9/3: 2
+  9/4: 2
+  10/1: 2
+  10/2: 2
+  10/3: 2
+  10/4: 2
+  11/1: 2
+  11/2: 2
+  11/3: 2
+  11/4: 2
+  12/1: 2
+  12/2: 2
+  12/3: 2
+  12/4: 2
+  13/1: 2
+  13/2: 2
+  13/3: 2
+  13/4: 2
+  14/1: 2
+  14/2: 2
+  14/3: 2
+  14/4: 2
+  15/1: 2
+  15/2: 2
+  15/3: 2
+  15/4: 2
+  16: [2]
+  17: [2]
+  18: [2]
+  19: [2]
+  20: [2]
+  21: [2]
+  22: [2]
+  23: [2]
+  24: [2]
+  25: [2]
+  26: [2]
+  27: [2]
+  28: [2]
+  29: [2]
+  30: [2]
+  31: [2]
+  32: [2]
+
 common_vlans: &common_vlans
   # port : vlan(s)
   # vlan = int => untagged
@@ -25,33 +104,41 @@ common_vlans: &common_vlans
   # Ports 11 - 18 are inter-switch links
   # 11-14 -> switch1
   # 11 set per-switch
-  #11: [1]
-  12: [2]
-  13: [3]
-  14: [4]
+  #11: [2]
+  12: [3]
+  13: [4]
+  14: [5]
   # 15-18 -> switch2
   # 15 set per-switch
-  #15: [1]
-  16: [2]
-  17: [3]
-  18: [4]
+  #15: [2]
+  16: [3]
+  17: [4]
+  18: [5]
   19: 100
   20: 100
   # Ports 21-29 are X-engines
-  # 21/22 are set per-switch
-  #21: 1
-  #22: 1
-  23: 2
-  24: 2
-  25: 3
-  26: 3
-  27: 4
-  28: 4
+  # Ports 21/22 set per-switch
+  21: 6
+  22: 6
+  23: 3
+  24: 3
+  25: 4
+  26: 4
+  27: 5
+  28: 5
   # Spare X-engine
   29: 100
   30: 100
   31: 100
   32: 100
+
+common_vlan_maps: &common_vlan_maps
+  12: {in : [2,3]}
+  13: {in : [2,4]}
+  14: {in : [2,5]}
+  16: {in : [2,3]}
+  17: {in : [2,4]}
+  18: {in : [2,5]}
 
 static_address_table: &static_address_table_ssc
   16: [hera-gpu1-5.forty.pvt, hera-gpu2-5.forty.pvt]
@@ -122,48 +209,56 @@ switches:
     <<: *arista7050
     vlans:
       <<: *common_vlans
-      7/1: 1 
-      21:  1
-      22:  1
-      11:  1
-      15:  1
+      7/1: 6 
+      11: [6]
+      15: [6]
+    vlan_map:
+      <<: *common_vlan_maps
+      11: {bidi: [2,6]}
+      15: {bidi :[2,6]}
     address_table: *static_address_table_kdra
   hera-40g-sw2:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      21: 5
-      22: 5
-      11: [5]
-      15: [5]
+      11: [6]
+      15: [6]
+    vlan_map:
+      <<: *common_vlan_maps
+      11: {in : [2,6]}
+      15: {in : [2,6]}
     address_table: *static_address_table_kdra
   hera-40g-sw3:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      21: 5
-      22: 5
-      11: [5]
-      15: [5]
+      11: [6]
+      15: [6]
+    vlan_map:
+      <<: *common_vlan_maps
+      11: {in : [2,6]}
+      15: {in : [2,6]}
     address_table: *static_address_table_kdra
   hera-40g-sw4:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      21: 5
-      22: 5
-      11: [5]
-      15: [5]
+      11: [6]
+      15: [6]
+    vlan_map:
+      <<: *common_vlan_maps
+      11: {in : [2,6]}
+      15: {in : [2,6]}
     address_table: *static_address_table_kdra
   hera-ssc-sw1:
     <<: *arista7050
     address_table: *static_address_table_ssc
-    #vlans: *front_end_vlans
+    vlans: *front_end_vlans
   hera-ssc-sw2:
     <<: *arista7050
     address_table: *static_address_table_ssc
-    #vlans: *front_end_vlans
+    vlans: *front_end_vlans
    

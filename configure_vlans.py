@@ -58,6 +58,19 @@ for host, conf in config['switches'].iteritems():
             success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode access', 'switchport access vlan %d' % vlan])
             print_success(success)
         elif type(vlans) is list:
+            vlan_map_commands = []
+            try:
+                vlan_map = conf['vlan_map'][port]
+                for key, val in vlan_map.iteritems():
+                    if key == 'in':
+                        vlan_map_commands += ['switchport vlan mapping in %d %d' % (val[0], val[1])] 
+                    elif key == 'out':
+                        vlan_map_commands += ['switchport vlan mapping out %d %d' % (val[0], val[1])] 
+                    else:
+                        vlan_map_commands += ['switchport vlan mapping  %d %d' % (val[0], val[1])] 
+            except KeyError:
+                pass
+            
             for vlan in vlans:
                 if vlan == 'None':
                     continue
@@ -69,6 +82,7 @@ for host, conf in config['switches'].iteritems():
                 print "Setting Ethernet %s native vlan to %d" % (port_str, vlans[0]),
                 sys.stdout.flush()
                 success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk native vlan %d' % vlans[0], 'switchport trunk native vlan tag'])
+                #success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk native vlan %d' % vlans[0]])
                 print_success(success)
             else:
                 vlans = vlans[1:]
@@ -76,7 +90,11 @@ for host, conf in config['switches'].iteritems():
                 sys.stdout.flush()
                 success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'no switchport trunk native vlan'])
                 print_success(success)
-            print "Adding Ethernet %s to tagged vlans %s..." % (port_str, ','.join(map(str, vlans[1:]))),
+            if len(vlan_map_commands) > 0:
+                print "Adding Ethernet %s to tagged vlans %s... (map: %s)" % (port_str, ','.join(map(str, vlans)), vlan_map),
+            else:
+                print "Adding Ethernet %s to tagged vlans %s..." % (port_str, ','.join(map(str, vlans))),
             sys.stdout.flush()
             success = vlan_api.configure_interface('Ethernet %s' % port_str, ['switchport mode trunk', 'switchport trunk allowed vlan %s' % ','.join(map(str, vlans))])
+            success &= vlan_api.configure_interface('Ethernet %s' % port_str, vlan_map_commands)
             print_success(success)
