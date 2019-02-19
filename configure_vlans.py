@@ -29,6 +29,11 @@ def gen_port_str(model, port):
                 return "%d" % port
         elif type(port) is str:
             return port
+    elif model.lower() == "7124sx":
+        if type(port) is int:
+                return "%d" % port
+        elif type(port) is str:
+            return port
     else:
         print "I don't understand model %s!" % model
         exit
