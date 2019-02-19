@@ -1,5 +1,5 @@
 switches:
-  hera-10g-sw1:
+  hera-40g-sw5:
     model: '7124sx'
     username: 'admin'
     password: 'admin'
