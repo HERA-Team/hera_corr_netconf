@@ -81,7 +81,8 @@ front_end_vlans: &front_end_vlans
   29: [2]
   30: [2]
   31: [2]
-  32: [2]
+  # DHCP uplink
+  32: 2
 
 common_vlans: &common_vlans
   # port : vlan(s)
@@ -104,7 +105,7 @@ common_vlans: &common_vlans
   # Ports 11 - 18 are inter-switch links
   # 11-14 -> switch1
   # 11 set per-switch
-  #11: [3]
+  11: [3]
   12: [3]
   13: [3]
   14: [3]
@@ -114,6 +115,7 @@ common_vlans: &common_vlans
   16: [3]
   17: [3]
   18: [3]
+  # 19 is overridden by the switch providing DHCP
   19: 100
   20: 100
   # Ports 21-29 are X-engines
@@ -133,30 +135,32 @@ common_vlans: &common_vlans
   32: 100
 
 common_vlan_maps: &common_vlan_maps
+  11: {in : [2,3]}
   12: {in : [2,3]}
   13: {in : [2,3]}
   14: {in : [2,3]}
+  15: {in : [2,3]}
   16: {in : [2,3]}
   17: {in : [2,3]}
   18: {in : [2,3]}
 
 static_address_table: &static_address_table_ssc
-  #16: [hera-gpu1-5.forty.pvt, hera-gpu2-5.forty.pvt]
-  #17: [hera-gpu3-5.forty.pvt, hera-gpu4-5.forty.pvt]
-  18: [hera-gpu1-5.forty.pvt, hera-gpu2-5.forty.pvt, hera-gpu5-5.forty.pvt, hera-gpu6-5.forty.pvt]
-  19: [hera-gpu3-5.forty.pvt, hera-gpu4-5.forty.pvt, hera-gpu7-5.forty.pvt, hera-gpu8-5.forty.pvt]
-  #24: [hera-gpu10-5.forty.pvt, hera-gpu11-5.forty.pvt]
-  #25: [hera-gpu12-5.forty.pvt, hera-gpu13-5.forty.pvt]
-  26: [hera-gpu10-5.forty.pvt, hera-gpu11-5.forty.pvt, hera-gpu14-5.forty.pvt, hera-gpu15-5.forty.pvt]
-  27: [hera-gpu12-5.forty.pvt, hera-gpu13-5.forty.pvt, hera-gpu16-5.forty.pvt, hera-gpu17-5.forty.pvt]
-  #20: [hera-gpu1-3.forty.pvt, hera-gpu2-3.forty.pvt]
-  #21: [hera-gpu3-3.forty.pvt, hera-gpu4-3.forty.pvt]
-  22: [hera-gpu1-3.forty.pvt, hera-gpu2-3.forty.pvt, hera-gpu5-3.forty.pvt, hera-gpu6-3.forty.pvt]
-  23: [hera-gpu3-3.forty.pvt, hera-gpu4-3.forty.pvt, hera-gpu7-3.forty.pvt, hera-gpu8-3.forty.pvt]
-  #28: [hera-gpu10-3.forty.pvt, hera-gpu11-3.forty.pvt]
-  #29: [hera-gpu12-3.forty.pvt, hera-gpu13-3.forty.pvt]
-  30: [hera-gpu10-3.forty.pvt, hera-gpu11-3.forty.pvt, hera-gpu14-3.forty.pvt, hera-gpu15-3.forty.pvt]
-  31: [hera-gpu12-3.forty.pvt, hera-gpu13-3.forty.pvt, hera-gpu16-3.forty.pvt, hera-gpu17-3.forty.pvt]
+  16: [hera-gpu1-5.forty.pvt, hera-gpu2-5.forty.pvt]
+  17: [hera-gpu3-5.forty.pvt, hera-gpu4-5.forty.pvt]
+  18: [hera-gpu5-5.forty.pvt, hera-gpu6-5.forty.pvt]
+  19: [hera-gpu7-5.forty.pvt, hera-gpu8-5.forty.pvt]
+  24: [hera-gpu10-5.forty.pvt, hera-gpu11-5.forty.pvt]
+  25: [hera-gpu12-5.forty.pvt, hera-gpu13-5.forty.pvt]
+  26: [hera-gpu14-5.forty.pvt, hera-gpu15-5.forty.pvt]
+  27: [hera-gpu16-5.forty.pvt, hera-gpu17-5.forty.pvt]
+  20: [hera-gpu1-3.forty.pvt, hera-gpu2-3.forty.pvt]
+  21: [hera-gpu3-3.forty.pvt, hera-gpu4-3.forty.pvt]
+  22: [hera-gpu5-3.forty.pvt, hera-gpu6-3.forty.pvt]
+  23: [hera-gpu7-3.forty.pvt, hera-gpu8-3.forty.pvt]
+  28: [hera-gpu10-3.forty.pvt, hera-gpu11-3.forty.pvt]
+  29: [hera-gpu12-3.forty.pvt, hera-gpu13-3.forty.pvt]
+  30: [hera-gpu14-3.forty.pvt, hera-gpu15-3.forty.pvt]
+  31: [hera-gpu16-3.forty.pvt, hera-gpu17-3.forty.pvt]
 
 static_address_table: &static_address_table_kdra
   7/2: [catcher]
@@ -210,50 +214,35 @@ switches:
     <<: *arista7050
     vlans:
       <<: *common_vlans
+      # DHCP uplink
       7/1: 4 
-      11: [2,4]
-      15: [2,4]
+      19: 4
     vlan_map:
       <<: *common_vlan_maps
-      #7/1: {in : [3,4]}
-      11: {in : [2,4], out : [4,2]}
-      15: {in : [2,4], out : [4,2]}
     address_table: *static_address_table_kdra
   hera-40g-sw2:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      11: 800
-      15: 801
     vlan_map:
       <<: *common_vlan_maps
-      #11: {in : [2,3]}
-      #15: {in : [2,3]}
     address_table: *static_address_table_kdra
   hera-40g-sw3:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      11: 800
-      15: 801
     vlan_map:
       <<: *common_vlan_maps
-      #11: {in : [2,3]}
-      #15: {in : [2,3]}
     address_table: *static_address_table_kdra
   hera-40g-sw4:
     <<: *arista7050
     vlans:
       <<: *common_vlans
       7/1: 888
-      11: 800
-      15: 801
     vlan_map:
       <<: *common_vlan_maps
-      #11: {in : [2,3]}
-      #15: {in : [2,3]}
     address_table: *static_address_table_kdra
   hera-ssc-sw1:
     <<: *arista7050
