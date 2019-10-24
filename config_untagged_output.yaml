@@ -163,18 +163,51 @@ static_address_table: &static_address_table_ssc
   30: [hera-gpu14-3.forty.pvt, hera-gpu15-3.forty.pvt]
   31: [hera-gpu16-3.forty.pvt, hera-gpu17-3.forty.pvt]
 
-static_address_table: &static_address_table_kdra
+static_address_table_kdra_1: &static_address_table_kdra_1
   # Individual switches now need to know how to get to the catcher since they're a
   #7/2: [catcher]
-  21: [hera-gpu1-3.forty.pvt, hera-gpu1-5.forty.pvt, hera-gpu10-3.forty.pvt, hera-gpu10-5.forty.pvt]
-  22: [hera-gpu2-3.forty.pvt, hera-gpu2-5.forty.pvt, hera-gpu11-3.forty.pvt, hera-gpu11-5.forty.pvt]
-  23: [hera-gpu3-3.forty.pvt, hera-gpu3-5.forty.pvt, hera-gpu12-3.forty.pvt, hera-gpu12-5.forty.pvt]
-  24: [hera-gpu4-3.forty.pvt, hera-gpu4-5.forty.pvt, hera-gpu13-3.forty.pvt, hera-gpu13-5.forty.pvt]
-  25: [hera-gpu5-3.forty.pvt, hera-gpu5-5.forty.pvt, hera-gpu14-3.forty.pvt, hera-gpu14-5.forty.pvt]
-  26: [hera-gpu6-3.forty.pvt, hera-gpu6-5.forty.pvt, hera-gpu15-3.forty.pvt, hera-gpu15-5.forty.pvt]
-  27: [hera-gpu7-3.forty.pvt, hera-gpu7-5.forty.pvt, hera-gpu16-3.forty.pvt, hera-gpu16-5.forty.pvt]
-  28: [hera-gpu8-3.forty.pvt, hera-gpu8-5.forty.pvt, hera-gpu17-3.forty.pvt, hera-gpu17-5.forty.pvt]
-  29: [hera-gpu9-3.forty.pvt, hera-gpu9-5.forty.pvt, hera-gpu18-3.forty.pvt, hera-gpu18-5.forty.pvt]
+  21: [hera-gpu1-3.forty.pvt, hera-gpu1-5.forty.pvt]
+  22: [hera-gpu2-3.forty.pvt, hera-gpu2-5.forty.pvt]
+  23: [hera-gpu3-3.forty.pvt, hera-gpu3-5.forty.pvt]
+  24: [hera-gpu4-3.forty.pvt, hera-gpu4-5.forty.pvt]
+  25: [hera-gpu5-3.forty.pvt, hera-gpu5-5.forty.pvt]
+  26: [hera-gpu6-3.forty.pvt, hera-gpu6-5.forty.pvt]
+  27: [hera-gpu7-3.forty.pvt, hera-gpu7-5.forty.pvt]
+  28: [hera-gpu8-3.forty.pvt, hera-gpu8-5.forty.pvt]
+  29: [hera-gpu9-3.forty.pvt, hera-gpu9-5.forty.pvt]
+  30:
+    - hera-gpu10-5.forty.pvt
+    - hera-gpu11-5.forty.pvt
+    - hera-gpu12-5.forty.pvt
+    - hera-gpu13-5.forty.pvt
+    - hera-gpu14-5.forty.pvt
+    - hera-gpu15-5.forty.pvt
+    - hera-gpu16-5.forty.pvt
+    - hera-gpu17-5.forty.pvt
+    - hera-gpu18-5.forty.pvt
+
+static_address_table_kdra_2: &static_address_table_kdra_2
+  # Individual switches now need to know how to get to the catcher since they're a
+  #7/2: [catcher]
+  21: [hera-gpu10-3.forty.pvt, hera-gpu10-5.forty.pvt]
+  22: [hera-gpu11-3.forty.pvt, hera-gpu11-5.forty.pvt]
+  23: [hera-gpu12-3.forty.pvt, hera-gpu12-5.forty.pvt]
+  24: [hera-gpu13-3.forty.pvt, hera-gpu13-5.forty.pvt]
+  25: [hera-gpu14-3.forty.pvt, hera-gpu14-5.forty.pvt]
+  26: [hera-gpu15-3.forty.pvt, hera-gpu15-5.forty.pvt]
+  27: [hera-gpu16-3.forty.pvt, hera-gpu16-5.forty.pvt]
+  28: [hera-gpu17-3.forty.pvt, hera-gpu17-5.forty.pvt]
+  29: [hera-gpu18-3.forty.pvt, hera-gpu18-5.forty.pvt]
+  30:
+    - hera-gpu1-5.forty.pvt
+    - hera-gpu2-5.forty.pvt
+    - hera-gpu3-5.forty.pvt
+    - hera-gpu4-5.forty.pvt
+    - hera-gpu5-5.forty.pvt
+    - hera-gpu6-5.forty.pvt
+    - hera-gpu7-5.forty.pvt
+    - hera-gpu8-5.forty.pvt
+    - hera-gpu9-5.forty.pvt
 
 dynamic_address_table: &dynamic_address_table
   dynamic:
@@ -222,7 +255,7 @@ switches:
     vlan_map:
       <<: *common_vlan_maps
     address_table:
-      <<: *static_address_table_kdra
+      <<: *static_address_table_kdra_1
       # switch 1 forwards catcher packets to switch 3
       30: [catcher]
   hera-40g-sw2:
@@ -232,7 +265,7 @@ switches:
       7/1: 888
     vlan_map:
       <<: *common_vlan_maps
-    address_table: *static_address_table_kdra
+    address_table: *static_address_table_kdra_1
   hera-40g-sw3:
     <<: *arista7050
     vlans:
@@ -241,7 +274,7 @@ switches:
     vlan_map:
       <<: *common_vlan_maps
     address_table:
-      <<: *static_address_table_kdra
+      <<: *static_address_table_kdra_2
       # switch 3 has a direct-connect to the catcher
       32: [catcher]
   hera-40g-sw4:
@@ -251,7 +284,7 @@ switches:
       7/1: 888
     vlan_map:
       <<: *common_vlan_maps
-    address_table: *static_address_table_kdra
+    address_table: *static_address_table_kdra_2
   hera-ssc-sw1:
     <<: *arista7050
     address_table: *static_address_table_ssc
