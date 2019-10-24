@@ -97,7 +97,8 @@ common_vlans: &common_vlans
   #7/1: 2 Set individually per switch
   # 7/2 is the [NOW UNUSED] uplink to the storage switch
   7/2: 997
-  7/3: [11]
+  # 7/3 is wired in for one day using GBT-1u(?)
+  7/3: 1000
   7/4: 999
   8: 100
   9: 100
